@@ -1,0 +1,27 @@
+{
+  "name": "gulp-thrift",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test/test.js"
+  },
+  "author": "Dan Chao",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.13",
+    "lodash": "^3.0.1",
+    "mkdirp": "^0.5.0",
+    "rimraf": "^2.2.8",
+    "through": "^2.3.6",
+    "vinyl": "^0.4.6"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "chai-as-promised": "^4.2.0",
+    "chai-fs": "^0.1.0",
+    "chai-things": "^0.2.0",
+    "gulp": "^3.8.10",
+    "gulp-debug": "^2.0.0"
+  }
+}
