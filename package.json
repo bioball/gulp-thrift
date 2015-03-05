@@ -1,14 +1,19 @@
 {
   "name": "gulp-thrift",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Streamified Thrift file generation for Gulp",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/test.js"
   },
-  "author": "Dan Chao",
+  "author": "Dan Chao <daniel.h.chao+npm@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/bioball/gulp-thrift",
+  "keywords": [
+    "gulpplugin",
+    "thrift",
+    "gulp-thrift"
+  ],
   "dependencies": {
     "bluebird": "^2.9.13",
     "gulp-util": "^3.0.4",

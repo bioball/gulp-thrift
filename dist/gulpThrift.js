@@ -1,9 +1,7 @@
 (function() {
-  var File, Promise, _, createArgs, emptyTempFolder, es, exec, fs, gulpThrift, gutil, mkdirp, path, tempFolder, through, verifyThriftPath;
+  var File, Promise, _, createArgs, emptyTempFolder, exec, fs, gulpThrift, gutil, mkdirp, path, tempFolder, through, verifyThriftPath;
 
   createArgs = require('./createArgs');
-
-  es = require('event-stream');
 
   through = require('through');
 

@@ -4,7 +4,7 @@ Streamifies [Apache Thrift](https://thrift.apache.org/) file generation for Gulp
 
 Note that this library just calls Thrift directly and places all compiled files in a temporary folder, then reads the files in that folder back into the stream. Unfortunately, Thrift doesn't have an option to spit things into `STDOUT`.
 
-**This is still a work in progress, don't use it yet**
+**This is still a work in progress, don't use it yet. I will up the version to 0.1.0 once it is ready.**
 
 ## Installation
 

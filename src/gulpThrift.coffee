@@ -1,5 +1,4 @@
 createArgs   = require './createArgs'
-es           = require 'event-stream'
 through      = require 'through'
 _            = require 'lodash'
 path         = require 'path'
