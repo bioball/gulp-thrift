@@ -8,9 +8,16 @@ Note that this library just calls Thrift directly and places all compiled files 
 
 ## Installation
 
-`npm install gulp-thrift`
+You'll need to install Apache Thrift separately and have it available on your system. Installation instructions for OSX can be found [here](https://thrift.apache.org/docs/install/os_x).
 
-https://thrift.apache.org/docs/install/os_x
+Once you have it installed, make sure it is in your `$PATH`. Alternatively you may also point to the Thrift executable using the `thriftPath` option.
+
+Then, install gulp-thrift using npm:
+
+```
+npm install gulp-thrift
+```
+
 
 ## Usage
 
