@@ -6,16 +6,16 @@
   createArgs = function(options) {
     var thriftOpts;
     thriftOpts = {
-      version: null,
-      I: null,
-      nowarn: null,
-      strict: null,
-      verbose: null,
-      recurse: null,
-      allowNegKeys: null,
-      allow64bitConsts: null,
-      gen: null,
-      out: null
+      version: false,
+      I: [],
+      nowarn: false,
+      strict: false,
+      verbose: false,
+      recurse: false,
+      allowNegKeys: false,
+      allow64bitConsts: false,
+      gen: 'js',
+      out: false
     };
     _.extend(thriftOpts, _.pick(options, Object.keys(thriftOpts)));
     return _.reduce(thriftOpts, function(str, value, key) {

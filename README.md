@@ -25,34 +25,39 @@ gulp.src('./flubird/*.thrift')
 ### version
 
 type: `Boolean`
-default: false
+
+default: `false`
 
 Prints the compiler version
 
 ### includeDirs
 
 type: `Array`
-default: null
+
+default: `[]`
 
 List of directories to include when searching for directives
 
 ### nowarn
 
 type: `Boolean`
-default: false
+
+default: `false`
 
 Silence compiler warnings
 
 ### strict
 
 type: `Boolean`
-default: false
+
+default: `false`
 
 Toggles strict mode
 
 ### verbose
 
 type: `Boolean`
+
 default: false
 
 Toggles verbose mode
@@ -60,20 +65,23 @@ Toggles verbose mode
 ### allowNegKeys
 
 type: `Boolean`
-default: false
+
+default: `false`
 
 Allow negative field keys (Used to preserve protocol compatibility with older .thrift files)
 
 ### allow64BitConsts
 
 type: `Boolean`
-default: false
+
+default: `false`
 
 Don't print warnings about using 64-bit constants
 
 ### gen
 
 type: `String`
+
 default: `js`
 
 The language to compile into
@@ -81,6 +89,7 @@ The language to compile into
 ### thriftPath
 
 type: `String`
+
 default: `thrift`
 
 The location of the thrift compiler executable. By default, it's assumed to be in your `$PATH`.
