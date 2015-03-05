@@ -89,7 +89,7 @@ Don't print warnings about using 64-bit constants
 
 type: `String`
 <br />
-default: `js`
+default: `'js'`
 
 The language to compile into
 
@@ -97,7 +97,7 @@ The language to compile into
 
 type: `String`
 <br />
-default: `thrift`
+default: `'thrift'`
 
 The location of the thrift compiler executable. By default, it's assumed to be in your `$PATH`.
 
