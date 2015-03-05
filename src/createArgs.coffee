@@ -12,13 +12,13 @@ createArgs = (options) ->
     recurse: false
     allowNegKeys: false
     allow64bitConsts: false
-    gen: 'js'
+    gen: ''
     out: false
 
   _.extend(thriftOpts, _.pick(options, Object.keys(thriftOpts)))
 
   _.reduce thriftOpts, (str, value, key) ->
-    if value?
+    if value
       str += getFlag(key, value)
     str
   , ""

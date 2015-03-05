@@ -14,12 +14,12 @@
       recurse: false,
       allowNegKeys: false,
       allow64bitConsts: false,
-      gen: 'js',
+      gen: '',
       out: false
     };
     _.extend(thriftOpts, _.pick(options, Object.keys(thriftOpts)));
     return _.reduce(thriftOpts, function(str, value, key) {
-      if (value != null) {
+      if (value) {
         str += getFlag(key, value);
       }
       return str;

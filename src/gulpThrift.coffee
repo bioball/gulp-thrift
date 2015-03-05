@@ -8,6 +8,7 @@ mkdirp       = require 'mkdirp'
 Promise      = require 'bluebird'
 fs           = Promise.promisifyAll require 'fs'
 File         = require 'vinyl'
+gutil        = require 'gulp-util'
 
 
 tempFolder = path.join(__dirname, "../.tmp")
@@ -64,7 +65,7 @@ module.exports = gulpThrift = (opts = {}) ->
       command = "thrift #{ createArgs(opts) } #{ file.path }"
       if opts.versbose
         gutil.log("executing command", command)
-      exec command, resolve
+      exec(command, resolve)
 
   # read compiled files from directly into stream
   endFn = ->
@@ -84,8 +85,9 @@ module.exports = gulpThrift = (opts = {}) ->
       .finally =>
         emptyTempFolder()
         @queue(null)
-    .catch (errors) =>
-      @emit('error', errors)
+
+    .catch (error) ->
+      throw new gutil.PluginError('gulp-thrift', error)
 
   return through(writeFn, endFn)
 

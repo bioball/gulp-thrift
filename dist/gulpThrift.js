@@ -1,5 +1,5 @@
 (function() {
-  var File, Promise, _, createArgs, emptyTempFolder, es, exec, fs, gulpThrift, mkdirp, path, tempFolder, through, verifyThriftPath;
+  var File, Promise, _, createArgs, emptyTempFolder, es, exec, fs, gulpThrift, gutil, mkdirp, path, tempFolder, through, verifyThriftPath;
 
   createArgs = require('./createArgs');
 
@@ -20,6 +20,8 @@
   fs = Promise.promisifyAll(require('fs'));
 
   File = require('vinyl');
+
+  gutil = require('gulp-util');
 
   tempFolder = path.join(__dirname, "../.tmp");
 
@@ -116,11 +118,9 @@
             return _this.queue(null);
           });
         };
-      })(this))["catch"]((function(_this) {
-        return function(errors) {
-          return _this.emit('error', errors);
-        };
-      })(this));
+      })(this))["catch"](function(error) {
+        throw new gutil.PluginError('gulp-thrift', error);
+      });
     };
     return through(writeFn, endFn);
   };
