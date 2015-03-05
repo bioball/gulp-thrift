@@ -12,7 +12,6 @@
       strict: null,
       verbose: null,
       recurse: null,
-      debug: null,
       allowNegKeys: null,
       allow64bitConsts: null,
       gen: null,

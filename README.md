@@ -12,31 +12,78 @@ Note that this library just calls Thrift directly and places all compiled files 
 
 https://thrift.apache.org/docs/install/os_x
 
-## Syntax
+## Usage
 
 ```js
-gulp.src('flubird/*.thrift')
-.pipe(thrift(<options>))
+gulp.src('./flubird/*.thrift')
+.pipe(thrift())
 .pipe(gulp.dest('./lib'))
 ```
 
+## Options
 
-An options object takes the following options
+### version
 
-```js
-{
-  version: <boolean>, // prints the compiler version
-  I: <array of directory strings>, // add a directory to the list of directories available to the thrift compiler
-  nowarn: <boolean>, // silences thrift warnings
-  strict: <boolean>, // toggles strict mode
-  verbose: <boolean>, // toggles verbose mode
-  debug: <boolean>, // parse debug trace to stdout
-  allowNegKeys: <boolean>, // 
-  allow64BitConsts: <boolean>, // do not print warnings about using 64-bit consts
-  gen: <string>, // the language to compile into
-  thriftPath: <string> // the location of the thrift executable
-}
-```
+type: `Boolean`
+default: false
+
+Prints the compiler version
+
+### includeDirs
+
+type: `Array`
+default: null
+
+List of directories to include when searching for directives
+
+### nowarn
+
+type: `Boolean`
+default: false
+
+Silence compiler warnings
+
+### strict
+
+type: `Boolean`
+default: false
+
+Toggles strict mode
+
+### verbose
+
+type: `Boolean`
+default: false
+
+Toggles verbose mode
+
+### allowNegKeys
+
+type: `Boolean`
+default: false
+
+Allow negative field keys (Used to preserve protocol compatibility with older .thrift files)
+
+### allow64BitConsts
+
+type: `Boolean`
+default: false
+
+Don't print warnings about using 64-bit constants
+
+### gen
+
+type: `String`
+default: `js`
+
+The language to compile into
+
+### thriftPath
+
+type: `String`
+default: `thrift`
+
+The location of the thrift compiler executable. By default, it's assumed to be in your `$PATH`.
 
 
 ## Contribution
