@@ -1,4 +1,4 @@
-thrift  = require '../src/gulpThrift'
+thrift  = require '../'
 gulp    = require 'gulp'
 debug   = require 'gulp-debug'
 path    = require 'path'

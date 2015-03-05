@@ -1,7 +1,7 @@
 createArgs = require '../src/createArgs'
 { expect } = require 'chai'
 
-describe.only 'creating arguments', ->
+describe 'creating arguments', ->
 
   it 'is a thing', ->
     expect(createArgs).to.exist

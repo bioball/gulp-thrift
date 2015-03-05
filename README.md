@@ -1,32 +1,27 @@
 # Gulp Thrift
 
-Streamifies [Thrift](https://thrift.apache.org/) file generation.
+Streamifies [Apache Thrift](https://thrift.apache.org/) file generation for Gulp.
+
+Note that this library just calls Thrift directly and places all compiled files in a temporary folder, then reads the files in that folder back into the stream. Unfortunately, Thrift doesn't have an option to spit things into `STDOUT`.
+
+**This is still a work in progress, don't use it yet**
 
 ## Installation
 
 `npm install gulp-thrift`
 
-NOTE: You'll need to install the thrift command line tool first, and have `thrift` in your `$PATH`. Instructions below:
-
 https://thrift.apache.org/docs/install/os_x
 
-## Usage
-
-Here's a sample gulpfile.js using gulp-thrift.
+## Syntax
 
 ```js
-var gulp = require('gulp');
-var thrift = require('gulp-thrift');
-
-gulp.task('thrift', function(){
-  return gulp.src('account.thrift')
-  .pipe(thrift({ jQuery: true, gen: 'js' }))
-  .pipe(gulp.dest('./lib/thrift'));
-});
-
+gulp.src('flubird/*.thrift')
+.pipe(thrift(<options>))
+.pipe(gulp.dest('./lib'))
 ```
 
-You can pass in an object of functions in into thrift. The following options are available to you:
+
+An options object takes the following options
 
 ```js
 {
@@ -38,7 +33,16 @@ You can pass in an object of functions in into thrift. The following options are
   debug: <boolean>, // parse debug trace to stdout
   allowNegKeys: <boolean>, // 
   allow64BitConsts: <boolean>, // do not print warnings about using 64-bit consts
-  gen: <string> // the language to compile into
+  gen: <string>, // the language to compile into
+  thriftPath: <string> // the location of the thrift executable
 }
 ```
 
+
+## Contribution
+
+Submit pull requests and whatnot through Github, and write tests for them
+
+## Tests
+
+Install the development dependencies via `npm install`, then run the test suite with `make`.

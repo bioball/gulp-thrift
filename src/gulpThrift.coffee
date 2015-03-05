@@ -63,7 +63,7 @@ module.exports = gulpThrift = (opts = {}) ->
     processes.push new Promise (resolve, reject) =>
       command = "thrift #{ createArgs(opts) } #{ file.path }"
       if opts.versbose
-        console.log("executing command", command)
+        gutil.log("executing command", command)
       exec command, resolve
 
   # read compiled files from directly into stream
