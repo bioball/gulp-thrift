@@ -98,7 +98,7 @@ module.exports = function gulpThrift() {
   // compile thrift files into a temp directory
   var writeFn = function writeFn(file) {
     return processes.push(new Promise(function (resolve, reject) {
-      var command = 'thrift #{ createArgs(opts) } #{ file.path }';
+      var command = 'thrift ' + createArgs(opts) + ' ' + file.path;
       if (opts.versbose) {
         gutil.log('executing command', command);
       }
