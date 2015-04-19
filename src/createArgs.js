@@ -7,7 +7,7 @@ const _ = require('lodash');
  */
 const createArgs = function (options) {
 
-  const thriftOpts = {
+  var thriftOpts = {
     version: false,
     I: [],
     nowarn: false,
