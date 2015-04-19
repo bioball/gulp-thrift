@@ -1,13 +1,13 @@
 gulp    = require 'gulp'
-coffee  = require 'gulp-coffee'
+babel   = require 'gulp-babel'
 plumber = require 'gulp-plumber'
 watch   = require 'gulp-watch'
 
-gulp.task 'coffee', ->
-  gulp.src('src/*.coffee')
+gulp.task 'script', ->
+  gulp.src('src/*.js')
   .pipe plumber()
-  .pipe coffee()
+  .pipe babel()
   .pipe gulp.dest('dist')
 
 gulp.task 'watch', ->
-  watch 'src/*.coffee', -> gulp.start 'coffee'
+  watch 'src/*.js', -> gulp.start 'script'

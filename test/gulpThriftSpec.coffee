@@ -18,9 +18,6 @@ outputDir = path.join(__dirname, 'actual')
 tmpDir    = path.join(__dirname, '..', '.tmp')
 
 describe 'gulp-thrift', ->
-
-  before (done) ->
-    rimraf(outputDir, done)
     
   beforeEach (done) ->
     rimraf(outputDir, done)
@@ -30,15 +27,26 @@ describe 'gulp-thrift', ->
 
 
   it 'creates thrift files', (done) ->
-    gulp.src(path.join(__dirname, 'fixtures/*.thrift'))
+    gulp.src(path.join(__dirname, 'fixtures/FluBird.thrift'))
     .pipe thrift()
     .pipe gulp.dest(outputDir)
     .on 'end', ->
       fs.readdirAsync(outputDir)
       .then (files) ->
-        expect(files).to.include.something.that.equals("calculator_types.js")
         expect(files).to.include.something.that.equals("FluBird_types.js")
         done()
+    .on 'error', done
+
+  it 'supports thrift files that output to two files', (done) ->
+    gulp.src(path.join(__dirname, 'fixtures/Abatross.thrift'))
+    .pipe thrift()
+    .pipe gulp.dest(outputDir)
+    .on 'end', ->
+      fs.readdirAsync(outputDir)
+      .then (files) ->
+        expect(files).to.include.something.that.equals("Abatross_types.js")
+        expect(files).to.include.something.that.equals("AbatrossService.js")
+    .on 'error', done
 
   # it 'supports other languages via the gen option', (done) ->
 
