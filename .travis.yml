@@ -8,6 +8,7 @@ before_install:
   - cd /tmp
   - curl http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz | tar zx
   - cd thrift-0.9.1/
+  - ./configure
   - make
   - sudo make install
   - npm install -g mocha

@@ -43,7 +43,7 @@ var verifyThriftPath = function verifyThriftPath(thriftPath) {
 
     var stdout = _syncExec.stdout;
 
-    if (stdout) {
+    if (fs.existsSync(stdout)) {
       return;
     }
   }
@@ -61,8 +61,6 @@ var verifyThriftPath = function verifyThriftPath(thriftPath) {
 var emptyTempFolder = function emptyTempFolder() {
   return fs.readdirAsync(tempFolder).map(function (file) {
     return fs.unlinkAsync(path.join(tempFolder, file));
-  })['catch'](function (error) {
-    throw new gutil.PluginError('gulp-thrift', error);
   });
 };
 

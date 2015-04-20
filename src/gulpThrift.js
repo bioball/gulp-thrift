@@ -35,7 +35,7 @@ const verifyThriftPath = function (thriftPath) {
     return;
   } else {
     const { stdout } = syncExec("which thrift");
-    if (stdout) {
+    if (fs.existsSync(stdout)) {
       return;
     }
   }
@@ -59,9 +59,6 @@ const emptyTempFolder = function(){
   return fs.readdirAsync(tempFolder)
   .map((file) => {
     return fs.unlinkAsync(path.join(tempFolder, file))
-  })
-  .catch((error) => {
-    throw new gutil.PluginError("gulp-thrift", error)
   });
 };
 
