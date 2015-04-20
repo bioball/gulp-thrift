@@ -5,13 +5,16 @@ node_js:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install libboost-dev libboost-test-dev libboost-program-options-dev libevent-dev automake libtool flex bison pkg-config g++ libssl-dev
-  - wget http://www.us.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz
-  - tar xfz thrift-0.9.1.tar.gz
-  - cd thrift-0.9.1 && ./configure && sudo make install
+  - cd /tmp
+  - curl http://archive.apache.org/dist/thrift/0.9.1/thrift-0.9.1.tar.gz | tar zx
+  - cd thrift-0.9.1/
+  - make
+  - sudo make install
   - npm install -g mocha
   - npm install -g gulp
-  - npm install
-  - gulp build:dev
+
+before_script:
+  - gulp script
 
 branches:
   only:
