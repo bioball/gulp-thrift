@@ -15,7 +15,7 @@ const Promise      = require('bluebird');
 const fs           = Promise.promisifyAll(require('fs'));
 const File         = require('vinyl');
 const gutil        = require('gulp-util');
-
+const syncExec     = require('sync-exec')
 
 const tempFolder = path.join(__dirname, "../.tmp")
 mkdirp.sync(tempFolder)
@@ -33,8 +33,11 @@ const verifyThriftPath = function (thriftPath) {
 
   if (thriftPath && fs.existsSync(thriftPath)) {
     return;
-  } else if () {
-    return;
+  } else {
+    const { stdout } = syncExec("which thrift");
+    if (stdout) {
+      return;
+    }
   }
 
   throw new gutil.PluginError("gulp-thrift", `${ gutil.colors.yellow(thriftPath) } is not a valid executable. Please install Thrift and have it in your $PATH, or provide its location as the thriftPath option.
@@ -74,7 +77,7 @@ const emptyTempFolder = function(){
 const readAsVinylFile = function (filepath) {
   return fs.readFileAsync(filepath)
   .then((contents) => {
-    return new File({ cwd: "/", base: path.dirname(filename), path: filename, contents: contents });
+    return new File({ cwd: "/", base: path.dirname(filepath), path: filepath, contents: contents });
   });
 };
 
@@ -107,7 +110,7 @@ module.exports = function gulpThrift (opts = {}) {
 
   var processes = [];
 
-  opts.gen        = opts.jen || "js";
+  opts.gen        = opts.gen || "js";
   opts.out        = opts.out || tempFolder;
   opts.thriftPath = opts.thriftPath || "thrift";
 
@@ -129,7 +132,7 @@ module.exports = function gulpThrift (opts = {}) {
     }));
   };
 
-  // read compiled files from directly into stream
+  // read compiled files from directory into stream
   const endFn = function(){
 
     return Promise.all(processes)

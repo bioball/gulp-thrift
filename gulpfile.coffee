@@ -13,7 +13,7 @@ gulp.task 'script', ->
 
 gulp.task 'thrift', ->
   gulp.src('./test/fixtures/Abatross.thrift')
-  .pipe thrift()
+  .pipe thrift(gen: "java")
   .pipe gulp.dest('./test/actual')
 
 gulp.task 'watch', ->

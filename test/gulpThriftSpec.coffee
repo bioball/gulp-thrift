@@ -46,16 +46,20 @@ describe 'gulp-thrift', ->
       .then (files) ->
         expect(files).to.include.something.that.equals("Abatross_types.js")
         expect(files).to.include.something.that.equals("AbatrossService.js")
+        done()
+      .catch done
     .on 'error', done
 
-  # it 'supports other languages via the gen option', (done) ->
+  it 'supports other languages via the gen option', (done) ->
 
-  #   gulp.src('./fixtures/*.thrift')
-  #   .pipe thrift(gen: 'java')
-  #   .pipe gulp.dest(outputDir)
-  #   .on 'end', ->
-  #     fs.readdirAsync(outputDir)
-  #     .then (files) ->
-  #       expect(files).to.include.something.that.equals('calculator_types.java')
-  #       expect(files).to.include.something.that.equals('FluBird_types.java')
-  #       done()
+    gulp.src(path.join(__dirname, 'fixtures/*.thrift'))
+    .pipe thrift(gen: 'java')
+    .pipe gulp.dest(outputDir)
+    .on 'end', ->
+      fs.readdirAsync(outputDir)
+      .then (files) ->
+        expect(files).to.include.something.that.equals('Calculator.java')
+        expect(files).to.include.something.that.equals('FluBird.java')
+        done()
+      .catch done
+    .on 'error', done
