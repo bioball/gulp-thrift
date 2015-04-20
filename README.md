@@ -1,5 +1,7 @@
 # Gulp Thrift
 
+[![Build Status](https://travis-ci.org/bioball/gulp-thrift.svg?branch=master)](https://travis-ci.org/bioball/gulp-thrift)
+
 Streamifies [Apache Thrift](https://thrift.apache.org/) file generation for Gulp.
 
 Note that this library just calls Thrift directly and places all compiled files in a temporary folder, then reads the files in that folder back into the stream. Unfortunately, Thrift doesn't have an option to spit things into `STDOUT`.
