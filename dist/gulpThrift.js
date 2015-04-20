@@ -1,3 +1,10 @@
+/**
+ * gulp-thrift
+ * Streamified Thrift file generation for Gulp.js
+ * (c) 2015 Daniel Chao
+ * May be distributed under the MIT license. 
+ */
+
 'use strict';
 
 var createArgs = require('./createArgs');
@@ -27,37 +34,44 @@ mkdirp.sync(tempFolder);
  * @return {Undefined}
  */
 var verifyThriftPath = function verifyThriftPath(thriftPath) {
-  if (!fs.existsSync(thriftPath)) {
-    throw new gutil.PluginError('gulp-thrift', '' + thriftPath + ' is not a valid executable file. Please install Thrift and have it in your $PATH, or provide it as the thriftPath argument.');
+
+  if (thriftPath && fs.existsSync(thriftPath)) {
+    return;
+  } else {
+    return;
   }
+
+  throw new gutil.PluginError('gulp-thrift', '' + gutil.colors.yellow(thriftPath) + ' is not a valid executable. Please install Thrift and have it in your $PATH, or provide its location as the thriftPath option.\n\n  For installation instructions:\n  https://thrift.apache.org/docs/install/\n  ');
 };
 
 /**
  * Remove all items in the temp folder.
+ *
+ * @private
+ * 
  * @return {Promise}
  */
 var emptyTempFolder = function emptyTempFolder() {
   return fs.readdirAsync(tempFolder).map(function (file) {
-    fs.unlinkAsync(path.join(tempFolder, file));
+    return fs.unlinkAsync(path.join(tempFolder, file));
   })['catch'](function (error) {
     throw new gutil.PluginError('gulp-thrift', error);
   });
 };
 
 /**
- * create a vinyl file from filename and contents.
+ * given a filepath, read it out of disk and wrap it as a vinyl file object.
  *
  * @private
  * 
- * @param  {Object}   obj
- * @param  {String}   obj.filename
- * @return {String}   obj.contents
+ * @param  {Array}    arr
+ * @param  {String}   arr.filename
+ * @return {String}   arr.contents
  */
-var createVinylFile = function createVinylFile(_ref) {
-  var filename = _ref.filename;
-  var contents = _ref.contents;
-
-  return new File({ cwd: '/', base: path.dirname(filename), path: filename, contents: contents });
+var readAsVinylFile = function readAsVinylFile(filepath) {
+  return fs.readFileAsync(filepath).then(function (contents) {
+    return new File({ cwd: '/', base: path.dirname(filename), path: filename, contents: contents });
+  });
 };
 
 /**
@@ -89,20 +103,25 @@ module.exports = function gulpThrift() {
 
   var processes = [];
 
-  opts.thriftPath = opts.thriftPath || 'thrift';
   opts.gen = opts.jen || 'js';
   opts.out = opts.out || tempFolder;
+  opts.thriftPath = opts.thriftPath || 'thrift';
 
   verifyThriftPath(opts.thriftPath);
 
   // compile thrift files into a temp directory
   var writeFn = function writeFn(file) {
     return processes.push(new Promise(function (resolve, reject) {
-      var command = 'thrift ' + createArgs(opts) + ' ' + file.path;
+      var command = '' + opts.thriftPath + ' ' + createArgs(opts) + ' ' + file.path;
       if (opts.versbose) {
         gutil.log('executing command', command);
       }
-      exec(command, resolve);
+      exec(command, function (err) {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      });
     }));
   };
 
@@ -111,18 +130,13 @@ module.exports = function gulpThrift() {
     var _this = this;
 
     return Promise.all(processes).then(function () {
-      return fs.readdirAsync(tempFolder).map(function (file) {
-        return path.join(__dirname, '../.tmp/' + file);
-      }).map(function (filename) {
-        // keep a reference to the filename for each read file.
-        return fs.readFileAsync(filename).then(function (contents) {
-          return { contents: contents, filename: filename };
-        });
-      }).map(createVinylFile).each(function (file) {
-        _this.queue(file);
-      }).then(emptyTempFolder)['finally'](function () {
-        return _this.queue(null);
-      });
+      return fs.readdirAsync(tempFolder);
+    }).map(function (file) {
+      return path.join(__dirname, '../.tmp/' + file);
+    }).map(readAsVinylFile).each(function (file) {
+      return _this.queue(file);
+    }).then(emptyTempFolder).then(function () {
+      return _this.queue(null);
     })['catch'](function (error) {
       throw new gutil.PluginError('gulp-thrift', error);
     });

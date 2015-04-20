@@ -1,3 +1,10 @@
+/**
+ * gulp-thrift
+ * Streamified Thrift file generation for Gulp.js
+ * (c) 2015 Daniel Chao
+ * May be distributed under the MIT license. 
+ */
+
 const createArgs   = require('./createArgs');
 const through      = require('through');
 const _            = require('lodash');
@@ -22,21 +29,33 @@ mkdirp.sync(tempFolder)
  * @param  {String}     thriftPath      the path for the thrift executable
  * @return {Undefined}
  */
-const verifyThriftPath = function (thriftPath){
-  if (!fs.existsSync(thriftPath)) {
-    throw new gutil.PluginError("gulp-thrift", `${ thriftPath } is not a valid executable file. Please install Thrift and have it in your $PATH, or provide it as the thriftPath argument.`)
+const verifyThriftPath = function (thriftPath) {
+
+  if (thriftPath && fs.existsSync(thriftPath)) {
+    return;
+  } else if () {
+    return;
   }
+
+  throw new gutil.PluginError("gulp-thrift", `${ gutil.colors.yellow(thriftPath) } is not a valid executable. Please install Thrift and have it in your $PATH, or provide its location as the thriftPath option.
+
+  For installation instructions:
+  https://thrift.apache.org/docs/install/
+  `)
 };
 
 
 /**
  * Remove all items in the temp folder.
+ *
+ * @private
+ * 
  * @return {Promise}
  */
 const emptyTempFolder = function(){
   return fs.readdirAsync(tempFolder)
   .map((file) => {
-    fs.unlinkAsync(path.join(tempFolder, file))
+    return fs.unlinkAsync(path.join(tempFolder, file))
   })
   .catch((error) => {
     throw new gutil.PluginError("gulp-thrift", error)
@@ -44,16 +63,19 @@ const emptyTempFolder = function(){
 };
 
 /**
- * create a vinyl file from filename and contents.
+ * given a filepath, read it out of disk and wrap it as a vinyl file object.
  *
  * @private
  * 
- * @param  {Object}   obj
- * @param  {String}   obj.filename
- * @return {String}   obj.contents
+ * @param  {Array}    arr
+ * @param  {String}   arr.filename
+ * @return {String}   arr.contents
  */
-const createVinylFile = function ({ filename, contents }) {
-  return new File({ cwd: "/", base: path.dirname(filename), path: filename, contents: contents });
+const readAsVinylFile = function (filepath) {
+  return fs.readFileAsync(filepath)
+  .then((contents) => {
+    return new File({ cwd: "/", base: path.dirname(filename), path: filename, contents: contents });
+  });
 };
 
 
@@ -85,20 +107,25 @@ module.exports = function gulpThrift (opts = {}) {
 
   var processes = [];
 
+  opts.gen        = opts.jen || "js";
+  opts.out        = opts.out || tempFolder;
   opts.thriftPath = opts.thriftPath || "thrift";
-  opts.gen = opts.jen || "js";
-  opts.out = opts.out || tempFolder;
 
   verifyThriftPath(opts.thriftPath);
 
   // compile thrift files into a temp directory
   const writeFn = function (file) {
     return processes.push(new Promise((resolve, reject) => {
-      const command = `thrift ${ createArgs(opts) } ${ file.path }`;
+      const command = `${ opts.thriftPath } ${ createArgs(opts) } ${ file.path }`;
       if (opts.versbose) {
         gutil.log("executing command", command);
       }
-      exec(command, resolve);
+      exec(command, (err) => {
+        if (err) {
+          reject(err);
+        }
+        resolve();
+      });
     }));
   };
 
@@ -106,26 +133,21 @@ module.exports = function gulpThrift (opts = {}) {
   const endFn = function(){
 
     return Promise.all(processes)
-    .then(() => {
-      return fs.readdirAsync(tempFolder)
-      .map((file) => { return path.join(__dirname, `../.tmp/${ file }`) })
-      .map((filename) => {
-        // keep a reference to the filename for each read file.
-        return fs.readFileAsync(filename)
-        .then((contents) => { 
-          return { contents, filename };
-        });
-      })
-      .map(createVinylFile)
-      .each((file) => {
-        this.queue(file)
-      })
-      .then(emptyTempFolder)
-      .finally(() => {
-        return this.queue(null);
-      })
+    .then(function(){
+      return fs.readdirAsync(tempFolder);
     })
-    .catch((error) => {
+    .map((file) => { 
+      return path.join(__dirname, `../.tmp/${ file }`) 
+    })
+    .map(readAsVinylFile)
+    .each((file) => { 
+      return this.queue(file) 
+    })
+    .then(emptyTempFolder)
+    .then(() => { 
+      return this.queue(null) 
+    })
+    .catch(function(error){
       throw new gutil.PluginError('gulp-thrift', error)
     });
   };

@@ -4,7 +4,7 @@
   "description": "Streamified Thrift file generation for Gulp",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter spec --compilers coffee:coffee-script/register test/*.coffee"
+    "test": "mocha"
   },
   "author": "Dan Chao <daniel.h.chao+npm@gmail.com>",
   "license": "MIT",
